@@ -1,8 +1,10 @@
 # OpenCV等でカメラ画像を取得し、毎フレームごとの輝度の平均値を計算
 <バージョン>
+
 Python 3.6.5 :: Anaconda custom (64-bit)
 
 <コードの説明>
+
 8~9:
 
 [file_name]に動画ファイル名入れ、[video]に動画ファイルを読み込む
@@ -20,6 +22,7 @@ Python 3.6.5 :: Anaconda custom (64-bit)
 [x]に0から[frame_count]を22分割した配列を入れ、これと配列[l]を用いてグラフをプロットする
 
 <参考サイト>
+
 https://www.tech-tech.xyz/opencv_video.html#1
 
 <-「動画を１フレームごとに画像へ変換」の部分
