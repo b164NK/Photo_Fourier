@@ -1,44 +1,85 @@
-# OpenCV等でカメラ画像を取得し、毎フレームごとの輝度の平均値を計算
+# Opencv等で画像の取得、フーリエ変換逆変換をリアルタイムで行う（マウスで周波数を指定）
 <バージョン>
 
 Python 3.6.5 :: Anaconda custom (64-bit)
 
 <コードの説明>
+7~28:
 
-8~9:
+mouseParam(クラス)の宣言。マウスのクリックから座標を取得するためのクラス。
 
-[file_name]に動画ファイル名入れ、[video]に動画ファイルを読み込む
+32~33:
 
-12~15:
+[img]に画像をcv2で読み込み、[im_gray]にグレースケール変換して保持させる。
 
-[frame_count]に動画のフレーム数を入れ、１フレーム毎にpngファイルを同一ディレクトリ内に生成する
+34~35:
 
-18~44:
+二次フーリエ変換をしたのちに、高周波成分と低周波成分の入れ替えを行う。
 
-[img]に１フレーム分の画像ファイルを読み込み、forの２重ループで１画素分の輝度値を計算し[H]に入れる。[H_mid_1f]には１フレーム分の全画素の輝度値の合計を入れて、36行目の計算によってそのフレームにおける輝度値の平均が入れられる。39行目では[H_mid_1f]の値とその時のフレームが標準出力されるようにしており、計算状況を目視で確認で切るようになっている。40~44行目で[l]という配列に各フレームの輝度値平均を順に格納しているのは、後述のグラフプロットに用いるためである。
+36~42:
 
-47~50:
+[magnitude_spectrum]を計算し、正規化してwindowに表示。これをクリックして座標を得る。
 
-[x]に0から[frame_count]を22分割した配列を入れ、これと配列[l]を用いてグラフをプロットする
+44:
+
+変換後の画像を表示するうwindowの名前を宣言。
+
+47:
+
+[h],[w]に縦幅横幅を保持させる。
+
+48:
+
+[done]は、マウスクリックで同じ座標が取得された時に計算を省くための変数。
+
+49:
+
+[mask]は、クリックされた座標以外の周波数成分を０にするために[fshift]に掛けるための変数。
+
+51~76:
+
+ESCキーが押されない限り、ループ
+
+57~76:
+
+左クリック時、周波数領域における座標を取得し二次フーリエ逆変換を行う。
+
+65~67:
+
+指定された周波数領域のみ1を代入した[mask]を[fshift]に掛ける。
+
+70~76:
+
+マスク掛けした[fshift_mask]を高周波成分と低周波成分の入れ替えをしたのちに２次元フーリエ逆変換を行い、絶対値をとって[result_window]に表示。
+
+79:
+
+全てのウィンドウを閉じる
 
 <参考サイト>
 
-https://www.tech-tech.xyz/opencv_video.html#1
+http://lang.sist.chukyo-u.ac.jp/classes/OpenCV/py_tutorials/py_imgproc/py_transforms/py_fourier_transform/py_fourier_transform.html
 
-<-「動画を１フレームごとに画像へ変換」の部分
+<-numpyを使ったフーリエ変換の部分
 
-https://algorithm.joho.info/programming/python/opencv-rgb-to-hsv-color-space/
+http://whitecat-student.hatenablog.com/entry/2016/11/09/225631
 
-<-「HSV色空間に変換」の「方法１」の部分
+<-マウスクリック座標取得の方法について
 
-https://note.nkmk.me/python-list-append-extend-insert/
+https://algorithm.joho.info/programming/python/opencv-fft-py/
 
-<-「末尾に要素を追加」の部分
+<-画像のフーリエ変換について
 
-https://qiita.com/KntKnk0328/items/5ef40d9e77308dd0d0a4
+https://algorithm.joho.info/image-processing/fourier-transform/
 
-<-「インスタンスを明言してプロットする」の部分
+<-画像のフーリエ変換の実装例について
+
+http://tatabox.hatenablog.com/entry/2013/07/20/202705
+
+<-magnitude_spectrumの正規化について
 
 <実行の様子>
 
-![demo](https://github.com/b164NK/H_MID_3/blob/master/H_MID_3.wiki/images/Result_H_mid.gif)
+
+
+![demo](https://github.com/b164NK/Photo_Fourier/blob/master/H_MID_3.wiki/images/Result_Fourier.gif)
